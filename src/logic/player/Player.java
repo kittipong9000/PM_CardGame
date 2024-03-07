@@ -24,6 +24,7 @@ public class Player {
     }
     public Player(ArrayList<BaseCard> deck) {
         this.deck = deck;
+        this.hand = new ArrayList<>(); // เพิ่มการกำหนดค่าให้กับ hand
         this.setHandForStart();
     }
     public void setHandForStart(){
