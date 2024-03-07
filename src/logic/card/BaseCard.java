@@ -22,4 +22,5 @@ public abstract class BaseCard {
     public void setbuff(Buff buff) {
         this.buff = buff;
     }
+    public abstract void play(Player traget);
 }

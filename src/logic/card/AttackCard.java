@@ -1,5 +1,7 @@
 package logic.card;
 
+import logic.player.Player;
+
 public class AttackCard extends BaseCard{
     private int power;
     private int cost;
@@ -19,5 +21,11 @@ public class AttackCard extends BaseCard{
     }
     public void setCost(int cost) {
         this.cost = cost;
+    }
+
+    public void play(Player traget){
+        for(int i=0;i<this.getPower();i++){
+            traget.getDeck().remove(0);
+        }
     }
 }

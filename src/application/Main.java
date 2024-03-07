@@ -13,9 +13,6 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("Pls Enter you name: ");
-
-    }
-    public static void play(){
-
+        printLineSeparator();
     }
 }

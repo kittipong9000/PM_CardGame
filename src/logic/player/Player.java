@@ -30,6 +30,7 @@ public class Player {
         for(BaseCard bc : this.getHand()){
             this.getDeck().add(bc);
         }
+        this.getHand().clear();
         for(int i=0;i<4 || this.isZero();i++){
             drawCard();
         }

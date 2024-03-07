@@ -4,22 +4,31 @@ import logic.card.BaseCard;
 import logic.player.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Enemy extends Player {
     private String name;
+
     public Enemy() {
         this("Enemy", new ArrayList<>());
     }
+
     public Enemy(String name, ArrayList<BaseCard> deck) {
+        super(deck);
         this.setName(name);
-        this.setDeck(deck);
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
-}
 
+    public void playCard() {
+        if (!this.getHand().isEmpty()) {
+            BaseCard cardToPlay = this.getHand().get(0).play(gameIo.getPlayer());
+            this.getHand().remove(0);
+        }
+    }
+}
