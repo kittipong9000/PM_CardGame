@@ -4,11 +4,9 @@ import logic.player.Player;
 
 public class AttackCard extends BaseCard{
     private int power;
-    private int cost;
     public AttackCard(String name,int power,int cost){
-        super(name);
+        super(name,cost);
         this.setPower(power);
-        this.setCost(cost);
     }
     public int getPower() {
         return power;
@@ -16,16 +14,22 @@ public class AttackCard extends BaseCard{
     public void setPower(int power) {
         this.power = power;
     }
-    public int getCost() {
-        return cost;
-    }
-    public void setCost(int cost) {
-        this.cost = cost;
-    }
-
-    public void play(Player traget){
-        for(int i=0;i<this.getPower();i++){
-            traget.getDeck().remove(0);
+    public void play(Player traget,Player user){
+        if(canPlay(user)){
+            traget.reduceDeck(this.getPower());
+            pay(user);
         }
+    }
+    @Override
+    public void pay(Player user) {
+        user.reduceDeck(this.getCost());
+    }
+    @Override
+    public boolean canPlay(Player user) {
+        return user.getDeck().size() >= this.getCost();
+    }
+    @Override
+    public String getDesc() {
+        return this.getName() +" power :"+this.getPower() +" cost :"+this.getCost();
     }
 }

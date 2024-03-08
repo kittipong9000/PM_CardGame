@@ -21,31 +21,75 @@ public class gameIo {
     }
 
     public void updateGame() {
-        this.boss.playCard();
-        System.out.println("Boss play");
-        this.player.setHandForStart();
-        System.out.println( "Player HP : "+ this.getPlayer().getDeck().size());
-        System.out.println( "BOSS HP : "+ this.getPlayer().getDeck().size());
+        System.out.println("1");
+        playerPlay();
+        if (isGameOver()) {
+            return;
+        }
+        System.out.println("2");
+
+        bossPlay();
+
+        System.out.println("3");
+
+        if (isGameOver()) {
+            return;
+        }
     }
 
     public void playerPlay() {
-        System.out.println("You Card : ");
-        for(int i=0;i<this.player.getHand().size();i++){
-            System.out.println((i+1) + " "+ this.getPlayer().getDeck().get(i).getName());
+        boolean continuePlaying = true; // ตั้งค่าตัวแปรเพื่อบอกว่าผู้เล่นต้องการเล่นการ์ดต่อหรือไม่
+
+        while (continuePlaying && !player.getHand().isEmpty()) { // ทำการวนลูปไปเรื่อย ๆ ถ้าผู้เล่นต้องการเล่นการ์ดต่อ และยังมีการ์ดในมือของผู้เล่น
+            System.out.println( "Player Card : "+ this.getPlayer().getDeck().size());
+            System.out.println( "BOSS Card : "+ this.getBoss().getDeck().size());
+
+            System.out.println("Your Cards: ");
+            for(int i = 0; i < player.getHand().size(); i++){
+                System.out.println((i + 1) + " " + player.getHand().get(i).getDesc());
+            }
+
+            System.out.println("Select a card to play (Enter 0 to stop playing): ");
+            int cardIndex = scanner.nextInt();
+
+            if (cardIndex == 0) { // ถ้าผู้เล่นเลือกใช้การ์ดหมายเลข 0 ให้หยุดการเล่น
+                continuePlaying = false;
+            } else if (cardIndex > 0 && cardIndex <= player.getHand().size()) { // ตรวจสอบว่าผู้เล่นเลือกการ์ดที่มีอยู่จริงหรือไม่
+                BaseCard selectedCard = player.getHand().get(cardIndex - 1);
+                selectedCard.play(boss,player);
+                player.getHand().remove(cardIndex - 1); // ลบการ์ดที่เล่นออกจากมือของผู้เล่น
+                if (isGameOver()) {
+                    return;
+                }
+            } else {
+                System.out.println("Invalid selection. Please select a valid card or enter 0 to stop playing.");
+            }
         }
-
-        System.out.println("Select a card to play : ");
-        int cardIndex = scanner.nextInt();
-        // เลือกการ์ดที่ผู้เล่นต้องการจะเล่นจากมือของผู้เล่น
-        BaseCard selectedCard = player.getHand().get(cardIndex - 1);
-
-        // เล่นการ์ดที่เลือก
-        // ในที่นี้ยังไม่ได้กำหนดว่าจะทำอะไรเมื่อผู้เล่นเลือกการ์ด คุณสามารถปรับแก้ตามความต้องการของเกมได้
     }
+
+
+    public void bossPlay(){
+        this.boss.setHandForStart();
+        BaseCard selectedCard = boss.getHand().get(0);
+        selectedCard.play(player,boss);
+        this.boss.getHand().remove(0);
+        System.out.println("Boss play "+selectedCard.getName());
+    }
+
+
 
     public boolean isGameOver(){
-        return player.isZero() || boss.isZero();
+         return player.isZero() || boss.isZero();
     }
+
+    public void gameEnd(){
+        if(player.isZero()){
+            System.out.println("You LOSE");
+        } else {
+            System.out.println("You WIN");
+        }
+    }
+
 
     public Player getPlayer() {
         return this.player;
@@ -53,5 +97,13 @@ public class gameIo {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public Enemy getBoss() {
+        return this.boss;
+    }
+
+    public void setBoss(Enemy boss) {
+        this.boss = boss;
     }
 }

@@ -25,10 +25,4 @@ public class Enemy extends Player {
         this.name = name;
     }
 
-    public void playCard() {
-        if (!this.getHand().isEmpty()) {
-            //BaseCard cardToPlay = this.getHand().get(0).play(gameIo.getPlayer());
-            this.getHand().remove(0);
-        }
-    }
 }
